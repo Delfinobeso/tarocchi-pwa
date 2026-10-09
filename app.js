@@ -20,6 +20,15 @@ COURSE.modules.forEach((m) => {
 });
 const total = COURSE.total;
 
+const MODULE_ICONS = {
+  bastoni: "icons/mod-bastoni.png",
+  coppe: "icons/mod-coppe.png",
+  spade: "icons/mod-spade.png",
+  denari: "icons/mod-denari.png",
+  maggiori: "icons/mod-maggiori.png",
+  corte: "icons/mod-corte.png",
+};
+
 function esc(s) {
   return String(s == null ? "" : s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -122,13 +131,12 @@ function renderHome() {
     </section>`;
 
   COURSE.modules.forEach((m) => {
-    const [emoji, ...rest] = m.name.split(" ");
-    const label = rest.join(" ");
+    const label = m.name.replace(/^\S+\s/, "");
     const doneM = m.lessons.filter((l) => isDone(l.num)).length;
     html += `
       <section class="card">
         <div class="row" role="button" tabindex="0" data-nav="modulo" data-id="${esc(m.id)}">
-          <div class="emoji">${emoji}</div>
+          <div class="emoji"><img src="${MODULE_ICONS[m.id]}" alt="${esc(label)}"></div>
           <div class="body">
             <div class="t">${esc(label)}</div>
             <div class="s">${esc(m.theme)}</div>
@@ -531,10 +539,9 @@ function renderProgress() {
     COURSE.modules.forEach((m) => {
       m.lessons.forEach((l) => {
         if (isDone(l.num)) {
-          const [emoji] = m.name.split(" ");
           html += `<div class="row lesson-row done" role="button" tabindex="0" data-nav="lezione" data-id="${l.num}">
             <div class="check"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--green)"/><path d="M7 12.5l3 3L17 9" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="body"><div class="t">${esc(l.card)}</div><div class="s">${emoji} ${esc(m.name.split(" ").slice(1).join(" "))}</div></div>
+            <div class="body"><div class="t">${esc(l.card)}</div><div class="s">${esc(m.name.split(" ").slice(1).join(" "))}</div></div>
             <span class="chevron"><svg width="10" height="18" viewBox="0 0 10 18"><path d="M1 1l8 8-8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>`;
         }
