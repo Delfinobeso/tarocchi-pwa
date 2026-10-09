@@ -1,4 +1,4 @@
-const CACHE = "tarocchi-v5";
+const CACHE = "tarocchi-v6";
 const ASSETS = [
   "./",
   "./index.html",
@@ -28,6 +28,19 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return; // lascia passare i link esterni (YouTube ecc.)
+  const isCore = e.request.mode === "navigate" || /\.(html|js|css|webmanifest|json)$/.test(url.pathname);
+  if (isCore) {
+    // network-first: HTML/JS/CSS sempre aggiornati
+    e.respondWith(
+      fetch(e.request).then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, copy));
+        return res;
+      }).catch(() => caches.match(e.request))
+    );
+    return;
+  }
+  // cache-first per immagini e asset statici
   e.respondWith(
     caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
       const copy = res.clone();
