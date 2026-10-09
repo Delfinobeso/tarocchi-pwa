@@ -195,9 +195,11 @@ function renderLesson(num) {
   setHeader("Lezione", `${modLabel} · ${l.num} di ${total}`, true);
   setTab("home");
 
+  const thumb = l.videoUrl ? getVideoThumb(l.videoUrl) : null;
   const videoBlock = l.videoUrl
     ? `<section class="card detail-card">
         <div class="dt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 016.5 3h11A2.5 2.5 0 0120 5.5v13a2.5 2.5 0 01-2.5 2.5h-11A2.5 2.5 0 014 18.5v-13z" stroke="currentColor" stroke-width="1.6"/><path d="M10 8.5l5.5 3.5L10 15.5v-7z" fill="currentColor"/></svg> Video</div>
+        ${thumb ? `<a class="video-thumb" href="${esc(l.videoUrl)}" target="_blank" rel="noopener"><img src="${thumb}" alt="" loading="lazy"><span class="play">▶</span></a>` : ""}
         <div class="dd"><a class="link" href="${esc(l.videoUrl)}" target="_blank" rel="noopener">${esc(l.videoTitle)}</a><span class="pill">${esc(l.videoDur || "")}</span></div>
       </section>`
     : `<section class="card detail-card">
@@ -205,10 +207,21 @@ function renderLesson(num) {
         <div class="dd">Video non ancora pubblicato</div>
       </section>`;
 
+  const carta = getCardByName(l.card);
+  let cartaHtml = "";
+  if (carta) {
+    cartaHtml = `<div class="lesson-card-img"><img src="${cardImg(carta)}" alt="${esc(l.card)}" loading="lazy"></div>`;
+  } else if (FIG_PLURAL[l.card]) {
+    const imgs = DECK.filter((c) => c.tipo === "corte" && c.nome.startsWith(FIG_PLURAL[l.card])).map((c) => cardImg(c));
+    if (imgs.length) cartaHtml = `<div class="lesson-corte">${imgs.map((src) => `<img src="${src}" alt="" loading="lazy">`).join("")}</div>`;
+  }
+
   let html = `
     <div class="lesson-head">
       <h2>${esc(l.card)}</h2>
     </div>
+
+    ${cartaHtml}
 
     ${videoBlock}
 
@@ -242,6 +255,18 @@ function renderLesson(num) {
 
 /* ---------- Carta del giorno ---------- */
 const semeEmoji = { Bastoni: "🔥", Coppe: "💧", Spade: "🗡️", Denari: "🪙" };
+const SEME_ENG = { Bastoni: "wands", Coppe: "cups", Spade: "swords", Denari: "pentacles" };
+const FIG_ENG = { Fante: "page", Cavaliere: "knight", Regina: "queen", Re: "king" };
+const FIG_PLURAL = { "I Fanti": "Fante", "I Cavalieri": "Cavaliere", "Le Regine": "Regina", "I Re": "Re" };
+function cardImg(c) {
+  if (!c) return "";
+  if (c.tipo === "maggiore") return "cards/maj-" + String(c.num).padStart(2, "0") + ".jpg";
+  const s = SEME_ENG[c.seme] || "wands";
+  if (c.tipo === "corte") { const fig = (c.nome || "").split(" ")[0]; return "cards/" + s + "-" + (FIG_ENG[fig] || "page") + ".jpg"; }
+  return "cards/" + s + "-" + String(c.num).padStart(2, "0") + ".jpg";
+}
+function getCardByName(nome) { return DECK.find((c) => c.nome === nome); }
+function getVideoThumb(url) { const m = /[?&]v=([^&]+)/.exec(url || ""); return m ? "https://img.youtube.com/vi/" + m[1] + "/mqdefault.jpg" : null; }
 function romano(n) {
   if (n === 0) return "0";
   const r = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
@@ -297,7 +322,7 @@ function cronologiaHtml() {
   stor.forEach((v) => {
     const nota = v.nota ? " · " + v.nota.replace(/\s+/g, " ").trim() : "";
     h += `<div class="row">
-      <div class="emoji">${cardSym(v.card)}</div>
+      <div class="emoji"><img src="${cardImg(v.card)}" alt=""></div>
       <div class="body">
         <div class="t">${esc(v.card.nome)}</div>
         <div class="s">${esc(formatData(v.date))}${esc(nota)}</div>
@@ -316,26 +341,16 @@ function renderCarta() {
   if (!card) card = pescaCarta();
   syncStorico();
 
-  let sym, sub, tipoLabel;
-  if (card.tipo === "maggiore") {
-    sym = "✦"; sub = romano(card.num);
-    tipoLabel = "Arcano maggiore";
-  } else {
-    const emoji = semeEmoji[card.seme] || "✦";
-    if (card.tipo === "corte") {
-      sym = emoji; sub = card.nome.split(" ")[0];
-      tipoLabel = "Carta di corte · " + card.seme;
-    } else {
-      sym = emoji; sub = card.num === 1 ? "A" : String(card.num);
-      tipoLabel = "Arcano minore · " + card.seme;
-    }
-  }
+  let tipoLabel;
+  if (card.tipo === "maggiore") tipoLabel = "Arcano maggiore";
+  else if (card.tipo === "corte") tipoLabel = "Carta di corte · " + card.seme;
+  else tipoLabel = "Arcano minore · " + card.seme;
   const oggi = new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
 
   let html = `
     <div class="ornamento">☾ ✦ ✦ ☾</div>
     <section class="card-day">
-      <div class="art"><div class="sym">${esc(sym)}</div><div class="sub">${esc(sub)}</div></div>
+      <div class="card-flip"><div class="card-inner"><div class="retro"></div><div class="fronte"><img src="${cardImg(card)}" alt="${esc(card.nome)}"></div></div></div>
       <div class="nome">${esc(card.nome)}</div>
       <div class="sig">${esc(card.sig)}</div>
       <div class="tipo">${esc(tipoLabel)}</div>
