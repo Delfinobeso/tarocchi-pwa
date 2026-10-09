@@ -34,6 +34,8 @@ const topbar = document.getElementById("topbar");
 const backBtn = document.getElementById("backBtn");
 const installBtn = document.getElementById("installBtn");
 const tabHome = document.getElementById("tabHome");
+const tabCarta = document.getElementById("tabCarta");
+const tabQuiz = document.getElementById("tabQuiz");
 const tabProgress = document.getElementById("tabProgress");
 
 function setHeader(title, subtitle, showBack) {
@@ -44,6 +46,8 @@ function setHeader(title, subtitle, showBack) {
 
 function setTab(active) {
   tabHome.classList.toggle("active", active === "home");
+  tabCarta.classList.toggle("active", active === "carta");
+  tabQuiz.classList.toggle("active", active === "quiz");
   tabProgress.classList.toggle("active", active === "progress");
 }
 
@@ -57,6 +61,10 @@ function route() {
     renderModule(id);
   } else if (h.startsWith("#/lezione/")) {
     renderLesson(parseInt(h.split("/")[2], 10));
+  } else if (h.startsWith("#/carta")) {
+    renderCarta();
+  } else if (h.startsWith("#/quiz")) {
+    renderQuiz();
   } else if (h.startsWith("#/progressi")) {
     renderProgress();
   } else {
@@ -196,6 +204,162 @@ function renderLesson(num) {
   });
 }
 
+/* ---------- Carta del giorno ---------- */
+const semeEmoji = { Bastoni: "🔥", Coppe: "💧", Spade: "🗡️", Denari: "🪙" };
+function romano(n) {
+  if (n === 0) return "0";
+  const r = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
+  return r[n - 1] || String(n);
+}
+function todayKey() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+function notaKey() { return "tarocchi-nota-" + todayKey(); }
+function loadCarta() {
+  const key = todayKey();
+  try {
+    const s = JSON.parse(localStorage.getItem("tarocchi-carta") || "null");
+    if (s && s.date === key && s.nome) return s;
+  } catch (e) {}
+  return null;
+}
+function pescaCarta() {
+  const idx = Math.floor(Math.random() * DECK.length);
+  const c = DECK[idx];
+  const s = { date: todayKey(), nome: c.nome, sig: c.sig, tipo: c.tipo, seme: c.seme || null, num: c.num || null };
+  localStorage.setItem("tarocchi-carta", JSON.stringify(s));
+  return s;
+}
+
+function renderCarta() {
+  setHeader("Carta del giorno", "Pesca dal mazzo Rider-Waite", false);
+  setTab("carta");
+
+  let card = loadCarta();
+  if (!card) card = pescaCarta();
+
+  let sym, sub, tipoLabel;
+  if (card.tipo === "maggiore") {
+    sym = "✦"; sub = romano(card.num);
+    tipoLabel = "Arcano maggiore";
+  } else {
+    const emoji = semeEmoji[card.seme] || "✦";
+    if (card.tipo === "corte") {
+      sym = emoji; sub = card.nome.split(" ")[0];
+      tipoLabel = "Carta di corte · " + card.seme;
+    } else {
+      sym = emoji; sub = card.num === 1 ? "A" : String(card.num);
+      tipoLabel = "Arcano minore · " + card.seme;
+    }
+  }
+  const oggi = new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+
+  let html = `
+    <section class="card-day">
+      <div class="art"><div class="sym">${esc(sym)}</div><div class="sub">${esc(sub)}</div></div>
+      <div class="nome">${esc(card.nome)}</div>
+      <div class="sig">${esc(card.sig)}</div>
+      <div class="tipo">${esc(tipoLabel)}</div>
+      <div class="date">${esc(oggi)}</div>
+    </section>
+    <div class="section-title">Le tue riflessioni</div>
+    <section class="card note-card">
+      <textarea id="notaInput" placeholder="Scrivi qui le tue note e riflessioni su questa carta…">${esc(localStorage.getItem(notaKey()) || "")}</textarea>
+    </section>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="ripescaBtn">Pesca un'altra carta</button>
+    </div>`;
+
+  main.innerHTML = html;
+  const ta = document.getElementById("notaInput");
+  ta.addEventListener("input", () => localStorage.setItem(notaKey(), ta.value));
+  document.getElementById("ripescaBtn").addEventListener("click", () => {
+    localStorage.removeItem("tarocchi-carta");
+    renderCarta();
+  });
+}
+
+/* ---------- Quiz ---------- */
+let quizState = null;
+
+function renderQuiz() {
+  setHeader("Quiz", "Metti alla prova ciò che hai imparato", false);
+  setTab("quiz");
+  if (!quizState || quizState.done) {
+    const shuffled = [...QUIZ].sort(() => Math.random() - 0.5).slice(0, 10);
+    quizState = { qs: shuffled, i: 0, score: 0, done: false, answered: false, chosen: null };
+  }
+  drawQuiz();
+}
+
+function drawQuiz() {
+  const st = quizState;
+  if (st.done) {
+    const best = parseInt(localStorage.getItem("tarocchi-quiz-best") || "0", 10);
+    const msg = st.score >= 9 ? "Straordinario! Sei una cartomante nata ✨"
+      : st.score >= 7 ? "Ottimo lavoro! Conosci bene le carte 🃏"
+      : st.score >= 5 ? "Buon risultato, continua ad allenarti!"
+      : "Non mollare: ripassa le carte e riprova!";
+    main.innerHTML = `
+      <div class="quiz-result">
+        <div class="score">${st.score}/10</div>
+        <div class="msg">${esc(msg)}</div>
+      </div>
+      <div class="quiz-best">Record personale: ${best}/10</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="againBtn">Ricomincia</button>
+        <button class="btn btn-ghost" id="homeBtn">Torna al corso</button>
+      </div>`;
+    document.getElementById("againBtn").addEventListener("click", () => { quizState = null; renderQuiz(); });
+    document.getElementById("homeBtn").addEventListener("click", () => { location.hash = "#/"; });
+    return;
+  }
+
+  const q = st.qs[st.i];
+  let opts = "";
+  q.o.forEach((opt, idx) => {
+    let cls = "option";
+    let dot = String.fromCharCode(65 + idx);
+    if (st.answered) {
+      cls += " locked";
+      if (idx === q.a) { cls += " correct"; dot = "✓"; }
+      else if (idx === st.chosen) { cls += " wrong"; dot = "✗"; }
+      else dot = String.fromCharCode(65 + idx);
+    }
+    opts += `<button class="${cls}" data-opt="${idx}"><span class="dot">${dot}</span>${esc(opt)}</button>`;
+  });
+
+  const nextLabel = st.i === st.qs.length - 1 ? "Vedi risultato" : "Prossima";
+  main.innerHTML = `
+    <div class="quiz-count">Domanda ${st.i + 1} di ${st.qs.length} · Punteggio ${st.score}</div>
+    <div class="quiz-q">${esc(q.q)}</div>
+    ${opts}
+    ${st.answered ? `<div class="btn-row"><button class="btn btn-primary" id="nextBtn">${nextLabel}</button></div>` : ""}`;
+
+  document.querySelectorAll(".option").forEach((el) => {
+    el.addEventListener("click", () => {
+      if (st.answered) return;
+      st.chosen = parseInt(el.getAttribute("data-opt"), 10);
+      st.answered = true;
+      if (st.chosen === q.a) st.score++;
+      drawQuiz();
+    });
+  });
+  const nb = document.getElementById("nextBtn");
+  if (nb) nb.addEventListener("click", () => {
+    st.i++;
+    st.answered = false;
+    st.chosen = null;
+    if (st.i >= st.qs.length) {
+      st.done = true;
+      const best = parseInt(localStorage.getItem("tarocchi-quiz-best") || "0", 10);
+      if (st.score > best) localStorage.setItem("tarocchi-quiz-best", String(st.score));
+    }
+    drawQuiz();
+  });
+}
+
 /* ---------- Progressi ---------- */
 function renderProgress() {
   setHeader("Progressi", "Il tuo percorso nel mazzo", false);
@@ -261,6 +425,8 @@ backBtn.addEventListener("click", () => {
 });
 
 tabHome.addEventListener("click", () => { location.hash = "#/"; });
+tabCarta.addEventListener("click", () => { location.hash = "#/carta"; });
+tabQuiz.addEventListener("click", () => { location.hash = "#/quiz"; });
 tabProgress.addEventListener("click", () => { location.hash = "#/progressi"; });
 
 /* ---------- Large title che si riduce ---------- */

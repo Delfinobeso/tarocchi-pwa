@@ -839,3 +839,815 @@ const COURSE = {
   }
  ]
 };
+const DECK = [
+ {
+  "nome": "Il Matto",
+  "sig": "nuovo inizio, libertà",
+  "tipo": "maggiore",
+  "num": 0
+ },
+ {
+  "nome": "Il Mago",
+  "sig": "volontà, manifestazione",
+  "tipo": "maggiore",
+  "num": 1
+ },
+ {
+  "nome": "La Papessa",
+  "sig": "intuizione, mistero",
+  "tipo": "maggiore",
+  "num": 2
+ },
+ {
+  "nome": "L'Imperatrice",
+  "sig": "abbondanza, creatività",
+  "tipo": "maggiore",
+  "num": 3
+ },
+ {
+  "nome": "L'Imperatore",
+  "sig": "struttura, autorità",
+  "tipo": "maggiore",
+  "num": 4
+ },
+ {
+  "nome": "Il Papa",
+  "sig": "tradizione, guida",
+  "tipo": "maggiore",
+  "num": 5
+ },
+ {
+  "nome": "Gli Amanti",
+  "sig": "scelta, amore",
+  "tipo": "maggiore",
+  "num": 6
+ },
+ {
+  "nome": "Il Carro",
+  "sig": "determinazione, vittoria",
+  "tipo": "maggiore",
+  "num": 7
+ },
+ {
+  "nome": "La Forza",
+  "sig": "coraggio, dolcezza",
+  "tipo": "maggiore",
+  "num": 8
+ },
+ {
+  "nome": "L'Eremita",
+  "sig": "introspezione, saggezza",
+  "tipo": "maggiore",
+  "num": 9
+ },
+ {
+  "nome": "La Ruota della Fortuna",
+  "sig": "cicli, destino",
+  "tipo": "maggiore",
+  "num": 10
+ },
+ {
+  "nome": "La Giustizia",
+  "sig": "equilibrio, verità",
+  "tipo": "maggiore",
+  "num": 11
+ },
+ {
+  "nome": "L'Appeso",
+  "sig": "prospettiva, attesa",
+  "tipo": "maggiore",
+  "num": 12
+ },
+ {
+  "nome": "La Morte",
+  "sig": "trasformazione, fine",
+  "tipo": "maggiore",
+  "num": 13
+ },
+ {
+  "nome": "La Temperanza",
+  "sig": "equilibrio, pazienza",
+  "tipo": "maggiore",
+  "num": 14
+ },
+ {
+  "nome": "Il Diavolo",
+  "sig": "attaccamento, ombra",
+  "tipo": "maggiore",
+  "num": 15
+ },
+ {
+  "nome": "La Torre",
+  "sig": "crollo, rivelazione",
+  "tipo": "maggiore",
+  "num": 16
+ },
+ {
+  "nome": "Le Stelle",
+  "sig": "speranza, ispirazione",
+  "tipo": "maggiore",
+  "num": 17
+ },
+ {
+  "nome": "La Luna",
+  "sig": "illusione, inconscio",
+  "tipo": "maggiore",
+  "num": 18
+ },
+ {
+  "nome": "Il Sole",
+  "sig": "gioia, vitalità",
+  "tipo": "maggiore",
+  "num": 19
+ },
+ {
+  "nome": "Il Giudizio",
+  "sig": "risveglio, rinascita",
+  "tipo": "maggiore",
+  "num": 20
+ },
+ {
+  "nome": "Il Mondo",
+  "sig": "compimento, completezza",
+  "tipo": "maggiore",
+  "num": 21
+ },
+ {
+  "nome": "Asso di Bastoni",
+  "sig": "scintilla, inizio",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 1
+ },
+ {
+  "nome": "Due di Bastoni",
+  "sig": "pianificazione, visione",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 2
+ },
+ {
+  "nome": "Tre di Bastoni",
+  "sig": "espansione, lungimiranza",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 3
+ },
+ {
+  "nome": "Quattro di Bastoni",
+  "sig": "celebrazione, stabilità",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 4
+ },
+ {
+  "nome": "Cinque di Bastoni",
+  "sig": "competizione, attrito",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 5
+ },
+ {
+  "nome": "Sei di Bastoni",
+  "sig": "vittoria, riconoscimento",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 6
+ },
+ {
+  "nome": "Sette di Bastoni",
+  "sig": "difesa, resilienza",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 7
+ },
+ {
+  "nome": "Otto di Bastoni",
+  "sig": "movimento, velocità",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 8
+ },
+ {
+  "nome": "Nove di Bastoni",
+  "sig": "resilienza, resistenza",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 9
+ },
+ {
+  "nome": "Dieci di Bastoni",
+  "sig": "sovraccarico, fardello",
+  "tipo": "minore",
+  "seme": "Bastoni",
+  "num": 10
+ },
+ {
+  "nome": "Fante di Bastoni",
+  "sig": "messaggero, nuova energia",
+  "tipo": "corte",
+  "seme": "Bastoni"
+ },
+ {
+  "nome": "Cavaliere di Bastoni",
+  "sig": "azione, impulso",
+  "tipo": "corte",
+  "seme": "Bastoni"
+ },
+ {
+  "nome": "Regina di Bastoni",
+  "sig": "maturità, cura interiore",
+  "tipo": "corte",
+  "seme": "Bastoni"
+ },
+ {
+  "nome": "Re di Bastoni",
+  "sig": "autorità, maestria",
+  "tipo": "corte",
+  "seme": "Bastoni"
+ },
+ {
+  "nome": "Asso di Coppe",
+  "sig": "apertura emotiva",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 1
+ },
+ {
+  "nome": "Due di Coppe",
+  "sig": "unione, partnership",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 2
+ },
+ {
+  "nome": "Tre di Coppe",
+  "sig": "amicizia, gioia",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 3
+ },
+ {
+  "nome": "Quattro di Coppe",
+  "sig": "apatia, chiusura",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 4
+ },
+ {
+  "nome": "Cinque di Coppe",
+  "sig": "perdita, rimpianto",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 5
+ },
+ {
+  "nome": "Sei di Coppe",
+  "sig": "nostalgia, ricordi",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 6
+ },
+ {
+  "nome": "Sette di Coppe",
+  "sig": "illusioni, scelte",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 7
+ },
+ {
+  "nome": "Otto di Coppe",
+  "sig": "distacco, ricerca",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 8
+ },
+ {
+  "nome": "Nove di Coppe",
+  "sig": "appagamento, desiderio",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 9
+ },
+ {
+  "nome": "Dieci di Coppe",
+  "sig": "armonia, felicità",
+  "tipo": "minore",
+  "seme": "Coppe",
+  "num": 10
+ },
+ {
+  "nome": "Fante di Coppe",
+  "sig": "messaggero, nuova energia",
+  "tipo": "corte",
+  "seme": "Coppe"
+ },
+ {
+  "nome": "Cavaliere di Coppe",
+  "sig": "azione, impulso",
+  "tipo": "corte",
+  "seme": "Coppe"
+ },
+ {
+  "nome": "Regina di Coppe",
+  "sig": "maturità, cura interiore",
+  "tipo": "corte",
+  "seme": "Coppe"
+ },
+ {
+  "nome": "Re di Coppe",
+  "sig": "autorità, maestria",
+  "tipo": "corte",
+  "seme": "Coppe"
+ },
+ {
+  "nome": "Asso di Spade",
+  "sig": "chiarezza, verità",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 1
+ },
+ {
+  "nome": "Due di Spade",
+  "sig": "scelta, indecisione",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 2
+ },
+ {
+  "nome": "Tre di Spade",
+  "sig": "dolore, crepacuore",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 3
+ },
+ {
+  "nome": "Quattro di Spade",
+  "sig": "riposo, recupero",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 4
+ },
+ {
+  "nome": "Cinque di Spade",
+  "sig": "conflitto, tensione",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 5
+ },
+ {
+  "nome": "Sei di Spade",
+  "sig": "transizione, partenza",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 6
+ },
+ {
+  "nome": "Sette di Spade",
+  "sig": "strategia, inganno",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 7
+ },
+ {
+  "nome": "Otto di Spade",
+  "sig": "limitazione, blocco",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 8
+ },
+ {
+  "nome": "Nove di Spade",
+  "sig": "ansia, preoccupazione",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 9
+ },
+ {
+  "nome": "Dieci di Spade",
+  "sig": "fine, fondo",
+  "tipo": "minore",
+  "seme": "Spade",
+  "num": 10
+ },
+ {
+  "nome": "Fante di Spade",
+  "sig": "messaggero, nuova energia",
+  "tipo": "corte",
+  "seme": "Spade"
+ },
+ {
+  "nome": "Cavaliere di Spade",
+  "sig": "azione, impulso",
+  "tipo": "corte",
+  "seme": "Spade"
+ },
+ {
+  "nome": "Regina di Spade",
+  "sig": "maturità, cura interiore",
+  "tipo": "corte",
+  "seme": "Spade"
+ },
+ {
+  "nome": "Re di Spade",
+  "sig": "autorità, maestria",
+  "tipo": "corte",
+  "seme": "Spade"
+ },
+ {
+  "nome": "Asso di Denari",
+  "sig": "opportunità, prosperità",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 1
+ },
+ {
+  "nome": "Due di Denari",
+  "sig": "equilibrio, priorità",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 2
+ },
+ {
+  "nome": "Tre di Denari",
+  "sig": "collaborazione, maestria",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 3
+ },
+ {
+  "nome": "Quattro di Denari",
+  "sig": "controllo, trattenere",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 4
+ },
+ {
+  "nome": "Cinque di Denari",
+  "sig": "difficoltà, bisogno",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 5
+ },
+ {
+  "nome": "Sei di Denari",
+  "sig": "generosità, scambio",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 6
+ },
+ {
+  "nome": "Sette di Denari",
+  "sig": "pazienza, attesa",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 7
+ },
+ {
+  "nome": "Otto di Denari",
+  "sig": "diligenza, apprendimento",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 8
+ },
+ {
+  "nome": "Nove di Denari",
+  "sig": "indipendenza, abbondanza",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 9
+ },
+ {
+  "nome": "Dieci di Denari",
+  "sig": "eredità, radici",
+  "tipo": "minore",
+  "seme": "Denari",
+  "num": 10
+ },
+ {
+  "nome": "Fante di Denari",
+  "sig": "messaggero, nuova energia",
+  "tipo": "corte",
+  "seme": "Denari"
+ },
+ {
+  "nome": "Cavaliere di Denari",
+  "sig": "azione, impulso",
+  "tipo": "corte",
+  "seme": "Denari"
+ },
+ {
+  "nome": "Regina di Denari",
+  "sig": "maturità, cura interiore",
+  "tipo": "corte",
+  "seme": "Denari"
+ },
+ {
+  "nome": "Re di Denari",
+  "sig": "autorità, maestria",
+  "tipo": "corte",
+  "seme": "Denari"
+ }
+];
+const QUIZ = [
+ {
+  "q": "Quale seme è associato all'elemento Fuoco (azione, passione, carriera)?",
+  "o": [
+   "Bastoni",
+   "Coppe",
+   "Spade",
+   "Denari"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale seme è associato alle emozioni e alle relazioni?",
+  "o": [
+   "Bastoni",
+   "Coppe",
+   "Spade",
+   "Denari"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale seme è associato alla mente, ai pensieri e ai conflitti?",
+  "o": [
+   "Bastoni",
+   "Coppe",
+   "Spade",
+   "Denari"
+  ],
+  "a": 2
+ },
+ {
+  "q": "Quale seme è associato alla materia, al denaro e al corpo?",
+  "o": [
+   "Bastoni",
+   "Coppe",
+   "Spade",
+   "Denari"
+  ],
+  "a": 3
+ },
+ {
+  "q": "Qual è il significato principale dell'Asso di Bastoni?",
+  "o": [
+   "Nuovo inizio e scintilla di energia",
+   "Perdita e rimpianto",
+   "Conflitto e lotta",
+   "Stabilità materiale"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Cosa rappresenta il Dieci di Spade?",
+  "o": [
+   "La celebrazione",
+   "La fine dolorosa di un ciclo",
+   "Una nuova opportunità",
+   "L'unione tra due persone"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale carta indica sovraccarico e troppi fardelli?",
+  "o": [
+   "Dieci di Bastoni",
+   "Asso di Coppe",
+   "Tre di Denari",
+   "Sei di Spade"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale carta indica pausa e riposo dopo uno sforzo?",
+  "o": [
+   "Cinque di Spade",
+   "Quattro di Spade",
+   "Sette di Bastoni",
+   "Due di Denari"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale carta è detta \"la carta del crepacuore\"?",
+  "o": [
+   "Tre di Spade",
+   "Nove di Coppe",
+   "Quattro di Denari",
+   "Il Sole"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale carta rappresenta l'unione e la partnership?",
+  "o": [
+   "Due di Coppe",
+   "Sette di Spade",
+   "Cinque di Denari",
+   "L'Eremita"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale arcano maggiore ha il numero XIII?",
+  "o": [
+   "La Torre",
+   "La Morte",
+   "Il Diavolo",
+   "L'Appeso"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Qual è il primo arcano maggiore (numero 0)?",
+  "o": [
+   "Il Mago",
+   "La Papessa",
+   "Il Matto",
+   "L'Imperatore"
+  ],
+  "a": 2
+ },
+ {
+  "q": "Quale arcano rappresenta l'intuizione e il mistero?",
+  "o": [
+   "La Papessa",
+   "Il Papa",
+   "La Forza",
+   "La Stella"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale carta è l'ultimo arcano maggiore (compimento)?",
+  "o": [
+   "Il Sole",
+   "Il Giudizio",
+   "Il Mondo",
+   "La Ruota"
+  ],
+  "a": 2
+ },
+ {
+  "q": "Il significato \"trasformazione, fine di un ciclo\" appartiene a…",
+  "o": [
+   "La Temperanza",
+   "La Morte",
+   "Gli Amanti",
+   "Il Carro"
+  ],
+  "a": 1
+ },
+ {
+  "q": "\"Crollo improvviso e rivelazione\" descrive…",
+  "o": [
+   "La Torre",
+   "La Luna",
+   "Il Mondo",
+   "La Giustizia"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale carta indica indipendenza e abbondanza personale?",
+  "o": [
+   "Cinque di Denari",
+   "Nove di Denari",
+   "Due di Coppe",
+   "Sette di Spade"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Secondo il libro, quale gruppo di carte è \"la scintilla\" che dà inizio a tutto?",
+  "o": [
+   "I Dieci",
+   "I Re",
+   "Gli Assi",
+   "Le Regine"
+  ],
+  "a": 2
+ },
+ {
+  "q": "Quale carta indica nostalgia e ricordi d'infanzia?",
+  "o": [
+   "Sei di Coppe",
+   "Otto di Spade",
+   "Dieci di Denari",
+   "Quattro di Bastoni"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale carta indica \"lasciare andare e allontanarsi\"?",
+  "o": [
+   "Due di Coppe",
+   "Otto di Coppe",
+   "Tre di Bastoni",
+   "Nove di Spade"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale carta indica generosità e scambio equo?",
+  "o": [
+   "Quattro di Denari",
+   "Sei di Denari",
+   "Sette di Spade",
+   "Cinque di Coppe"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale carta indica pazienza e attesa del raccolto?",
+  "o": [
+   "Sette di Denari",
+   "Asso di Spade",
+   "Tre di Coppe",
+   "Il Carro"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Da chi sono formate le carte di corte?",
+  "o": [
+   "Assi, Due, Tre, Quattro",
+   "Fanti, Cavalieri, Regine e Re",
+   "Solo Regine e Re",
+   "Il Matto e il Mago"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quante carte ha un mazzo di tarocchi completo?",
+  "o": [
+   "56",
+   "66",
+   "72",
+   "78"
+  ],
+  "a": 3
+ },
+ {
+  "q": "Quanti sono gli arcani maggiori?",
+  "o": [
+   "14",
+   "22",
+   "26",
+   "40"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale carta rappresenta illusione e confusione tra molte opzioni?",
+  "o": [
+   "Sette di Coppe",
+   "Asso di Denari",
+   "Due di Spade",
+   "L'Imperatrice"
+  ],
+  "a": 0
+ },
+ {
+  "q": "Quale carta è associata alla speranza e al rinnovamento?",
+  "o": [
+   "La Luna",
+   "Le Stelle",
+   "La Torre",
+   "L'Appeso"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Il Mago rappresenta…",
+  "o": [
+   "Il caos e l'incertezza",
+   "La volontà e la capacità di manifestare",
+   "La perdita e il lutto",
+   "La chiusura emotiva"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale carta indica equilibrio tra opposti e pazienza?",
+  "o": [
+   "Il Diavolo",
+   "La Temperanza",
+   "La Forza",
+   "Il Giudizio"
+  ],
+  "a": 1
+ },
+ {
+  "q": "Quale carta indica \"pianificazione e visione a lungo termine\"?",
+  "o": [
+   "Due di Bastoni",
+   "Cinque di Spade",
+   "Otto di Coppe",
+   "Re di Denari"
+  ],
+  "a": 0
+ }
+];
