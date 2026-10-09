@@ -271,7 +271,7 @@ function cronologiaHtml() {
 }
 
 function renderCarta() {
-  setHeader("Carta del giorno", "Pesca dal mazzo Rider-Waite", false);
+  setHeader("Carta del giorno", "Pesca una carta dal mazzo", false);
   setTab("carta");
 
   let card = loadCarta();
