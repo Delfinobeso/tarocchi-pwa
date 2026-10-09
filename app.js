@@ -33,6 +33,7 @@ const subtitleEl = document.getElementById("pageSubtitle");
 const topbar = document.getElementById("topbar");
 const backBtn = document.getElementById("backBtn");
 const installBtn = document.getElementById("installBtn");
+const settingsBtn = document.getElementById("settingsBtn");
 const tabHome = document.getElementById("tabHome");
 const tabCarta = document.getElementById("tabCarta");
 const tabQuiz = document.getElementById("tabQuiz");
@@ -51,6 +52,31 @@ function setTab(active) {
   tabProgress.classList.toggle("active", active === "progress");
 }
 
+/* ---------- Impostazioni: tema e colori ---------- */
+const ACCENTS = [
+  { id: "salvia", nome: "Verde salvia", color: "#5F7B62" },
+  { id: "terracotta", nome: "Terracotta", color: "#B3573C" },
+  { id: "vinaccia", nome: "Vinaccia", color: "#9C4660" },
+  { id: "rosa", nome: "Rosa polveroso", color: "#C4948C" },
+  { id: "bosco", nome: "Verde bosco", color: "#3E6B5E" },
+];
+function hexToRgba(hex, a) {
+  const h = hex.replace("#", "");
+  return `rgba(${parseInt(h.substring(0, 2), 16)}, ${parseInt(h.substring(2, 4), 16)}, ${parseInt(h.substring(4, 6), 16)}, ${a})`;
+}
+function applyAccent(color) {
+  document.documentElement.style.setProperty("--accent", color);
+  document.documentElement.style.setProperty("--accent-soft", hexToRgba(color, 0.16));
+}
+function applyTheme(theme) {
+  const dark = theme === "dark" || (theme !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  document.documentElement.classList.toggle("dark", dark);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", dark ? "#0E1715" : "#F4EEE7");
+}
+function getTema() { return localStorage.getItem("tarocchi-tema") || "auto"; }
+function getAccent() { return localStorage.getItem("tarocchi-accento") || ACCENTS[0].id; }
+
 /* ---------- Router ---------- */
 function route() {
   const h = location.hash || "#/";
@@ -65,6 +91,8 @@ function route() {
     renderCarta();
   } else if (h.startsWith("#/quiz")) {
     renderQuiz();
+  } else if (h.startsWith("#/impostazioni")) {
+    renderImpostazioni();
   } else if (h.startsWith("#/progressi")) {
     renderProgress();
   } else {
@@ -81,7 +109,9 @@ function renderHome() {
   const pct = Math.round((doneCount / total) * 100);
 
   let html = `
+    <div class="ornamento">☾ ✦ ✦ ☾</div>
     <section class="hero">
+      <div class="candela">🕯️ ✦ 🕯️</div>
       <div class="ring-row">
         <div>
           <div class="big-num">${doneCount}<small> / ${total}</small></div>
@@ -295,6 +325,7 @@ function renderCarta() {
   const oggi = new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
 
   let html = `
+    <div class="ornamento">☾ ✦ ✦ ☾</div>
     <section class="card-day">
       <div class="art"><div class="sym">${esc(sym)}</div><div class="sub">${esc(sub)}</div></div>
       <div class="nome">${esc(card.nome)}</div>
@@ -403,6 +434,75 @@ function drawQuiz() {
   });
 }
 
+/* ---------- Impostazioni ---------- */
+function renderImpostazioni() {
+  setHeader("Impostazioni", "Personalizza la tua app", true);
+  setTab("home");
+
+  const tema = getTema();
+  const accId = getAccent();
+  const acc = ACCENTS.find((a) => a.id === accId) || ACCENTS[0];
+
+  const temaOpts = [["auto", "Sistema"], ["light", "Chiaro"], ["dark", "Scuro"]];
+  const temaBtns = temaOpts.map(([v, label]) =>
+    `<button class="${tema === v ? "active" : ""}" data-tema="${v}">${label}</button>`).join("");
+
+  const swatches = ACCENTS.map((a) =>
+    `<div class="swatch ${accId === a.id ? "active" : ""}" data-accent="${a.id}" style="background:${a.color}" title="${esc(a.nome)}"></div>`).join("");
+
+  let html = `
+    <div class="section-label">Aspetto</div>
+    <section class="card" style="padding:12px 16px">
+      <div class="segmented">${temaBtns}</div>
+    </section>
+
+    <div class="section-label">Colore accento</div>
+    <section class="card" style="padding:16px">
+      <div class="swatches">${swatches}</div>
+      <div class="swatch-name">${esc(acc.nome)}</div>
+    </section>
+
+    <div class="section-label">Dati</div>
+    <section class="card">
+      <div class="row" id="resetRow">
+        <div class="body">
+          <div class="t">Reimposta i progressi</div>
+          <div class="s">Azzera lezioni completate, quiz e cronologia</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ornamento" style="margin-top:22px">☾ ✦ ✦ ☾</div>
+    <div class="swatch-name" style="text-align:center;margin-top:4px">Corso di Tarocchi · ${total} carte</div>`;
+
+  main.innerHTML = html;
+
+  document.querySelectorAll("[data-tema]").forEach((b) => {
+    b.addEventListener("click", () => {
+      localStorage.setItem("tarocchi-tema", b.getAttribute("data-tema"));
+      applyTheme(getTema());
+      renderImpostazioni();
+    });
+  });
+  document.querySelectorAll("[data-accent]").forEach((s) => {
+    s.addEventListener("click", () => {
+      const id = s.getAttribute("data-accent");
+      localStorage.setItem("tarocchi-accento", id);
+      const a = ACCENTS.find((x) => x.id === id);
+      if (a) applyAccent(a.color);
+      renderImpostazioni();
+    });
+  });
+  const rr = document.getElementById("resetRow");
+  if (rr) rr.addEventListener("click", () => {
+    if (confirm("Reimpostare tutti i progressi? Questa azione non può essere annullata.")) {
+      ["tarocchi-progresso", "tarocchi-storico", "tarocchi-quiz-best"].forEach((k) => localStorage.removeItem(k));
+      done = new Set();
+      renderImpostazioni();
+    }
+  });
+}
+
 /* ---------- Progressi ---------- */
 function renderProgress() {
   setHeader("Progressi", "Il tuo percorso nel mazzo", false);
@@ -412,6 +512,7 @@ function renderProgress() {
   const pct = Math.round((doneCount / total) * 100);
 
   let html = `
+    <div class="ornamento">☾ ✦ ✦ ☾</div>
     <section class="hero">
       <div class="ring-row">
         <div>
@@ -476,6 +577,7 @@ tabHome.addEventListener("click", () => { location.hash = "#/"; });
 tabCarta.addEventListener("click", () => { location.hash = "#/carta"; });
 tabQuiz.addEventListener("click", () => { location.hash = "#/quiz"; });
 tabProgress.addEventListener("click", () => { location.hash = "#/progressi"; });
+settingsBtn.addEventListener("click", () => { location.hash = "#/impostazioni"; });
 
 /* ---------- Large title che si riduce ---------- */
 main.addEventListener("scroll", () => {
@@ -503,6 +605,14 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   });
 }
+
+/* ---------- Init tema e colori ---------- */
+applyTheme(getTema());
+const _acc = ACCENTS.find((a) => a.id === getAccent());
+if (_acc) applyAccent(_acc.color);
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  if (getTema() === "auto") applyTheme("auto");
+});
 
 window.addEventListener("hashchange", route);
 route();
