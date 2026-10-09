@@ -232,12 +232,53 @@ function pescaCarta() {
   return s;
 }
 
+/* --- storico --- */
+function loadStorico() {
+  try { return JSON.parse(localStorage.getItem("tarocchi-storico") || "[]"); } catch (e) { return []; }
+}
+function saveStorico(arr) { localStorage.setItem("tarocchi-storico", JSON.stringify(arr)); }
+function cardSym(c) { return c.tipo === "maggiore" ? "✦" : (semeEmoji[c.seme] || "✦"); }
+function formatData(key) {
+  const p = key.split("-").map(Number);
+  return new Date(p[0], p[1] - 1, p[2]).toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" });
+}
+function syncStorico() {
+  const card = loadCarta();
+  if (!card) return;
+  const nota = localStorage.getItem(notaKey()) || "";
+  const arr = loadStorico();
+  const key = todayKey();
+  const idx = arr.findIndex((v) => v.date === key);
+  const voce = { date: key, card: { nome: card.nome, sig: card.sig, tipo: card.tipo, seme: card.seme, num: card.num }, nota: nota };
+  if (idx >= 0) arr[idx] = voce; else arr.push(voce);
+  arr.sort((a, b) => (a.date < b.date ? 1 : -1));
+  saveStorico(arr);
+}
+function cronologiaHtml() {
+  const stor = loadStorico().filter((v) => v.date !== todayKey());
+  if (!stor.length) return `<div class="empty" style="padding:26px 20px"><div class="big">📖</div>Le tue pescate passate appariranno qui.</div>`;
+  let h = `<div class="section-title">Cronologia</div><section class="card">`;
+  stor.forEach((v) => {
+    const nota = v.nota ? " · " + v.nota.replace(/\s+/g, " ").trim() : "";
+    h += `<div class="row">
+      <div class="emoji">${cardSym(v.card)}</div>
+      <div class="body">
+        <div class="t">${esc(v.card.nome)}</div>
+        <div class="s">${esc(formatData(v.date))}${esc(nota)}</div>
+      </div>
+    </div>`;
+  });
+  h += `</section>`;
+  return h;
+}
+
 function renderCarta() {
   setHeader("Carta del giorno", "Pesca dal mazzo Rider-Waite", false);
   setTab("carta");
 
   let card = loadCarta();
   if (!card) card = pescaCarta();
+  syncStorico();
 
   let sym, sub, tipoLabel;
   if (card.tipo === "maggiore") {
@@ -269,11 +310,15 @@ function renderCarta() {
     </section>
     <div class="btn-row">
       <button class="btn btn-ghost" id="ripescaBtn">Pesca un'altra carta</button>
-    </div>`;
+    </div>
+    ${cronologiaHtml()}`;
 
   main.innerHTML = html;
   const ta = document.getElementById("notaInput");
-  ta.addEventListener("input", () => localStorage.setItem(notaKey(), ta.value));
+  ta.addEventListener("input", () => {
+    localStorage.setItem(notaKey(), ta.value);
+    syncStorico();
+  });
   document.getElementById("ripescaBtn").addEventListener("click", () => {
     localStorage.removeItem("tarocchi-carta");
     renderCarta();
