@@ -350,7 +350,7 @@ function renderCarta() {
   let html = `
     <div class="ornamento">☾ ✦ ✦ ☾</div>
     <section class="card-day">
-      <div class="card-flip"><div class="card-inner"><div class="retro"></div><div class="fronte"><img src="${cardImg(card)}" alt="${esc(card.nome)}"></div></div></div>
+      <div class="card-day-img"><img src="${cardImg(card)}" alt="${esc(card.nome)}"></div>
       <div class="nome">${esc(card.nome)}</div>
       <div class="sig">${esc(card.sig)}</div>
       <div class="tipo">${esc(tipoLabel)}</div>

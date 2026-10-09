@@ -1,4 +1,4 @@
-const CACHE = "tarocchi-v4";
+const CACHE = "tarocchi-v5";
 const ASSETS = [
   "./",
   "./index.html",
