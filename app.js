@@ -21,12 +21,12 @@ COURSE.modules.forEach((m) => {
 const total = COURSE.total;
 
 const MODULE_ICONS = {
-  bastoni: "icons/mod-bastoni.png",
-  coppe: "icons/mod-coppe.png",
-  spade: "icons/mod-spade.png",
-  denari: "icons/mod-denari.png",
-  maggiori: "icons/mod-maggiori.png",
-  corte: "icons/mod-corte.png",
+  bastoni: "cards/wands-01.jpg",
+  coppe: "cards/cups-01.jpg",
+  spade: "cards/swords-01.jpg",
+  denari: "cards/pentacles-01.jpg",
+  maggiori: "cards/maj-00.jpg",
+  corte: "cards/cups-queen.jpg",
 };
 
 function esc(s) {
