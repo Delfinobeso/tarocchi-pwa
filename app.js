@@ -97,7 +97,7 @@ function renderHome() {
     const doneM = m.lessons.filter((l) => isDone(l.num)).length;
     html += `
       <section class="card">
-        <div class="row" data-nav="modulo" data-id="${esc(m.id)}">
+        <div class="row" role="button" tabindex="0" data-nav="modulo" data-id="${esc(m.id)}">
           <div class="emoji">${emoji}</div>
           <div class="body">
             <div class="t">${esc(label)}</div>
@@ -105,7 +105,6 @@ function renderHome() {
           </div>
           <div class="meta">
             <div class="count">${doneM}/${m.lessons.length}</div>
-            <div class="frac">${m.lessons.length} lezioni</div>
           </div>
           <span class="chevron"><svg width="10" height="18" viewBox="0 0 10 18"><path d="M1 1l8 8-8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
@@ -124,14 +123,14 @@ function renderModule(id) {
   setHeader(rest.join(" "), m.theme, true);
   setTab("home");
 
-  let html = `<div class="section-label">${esc(m.theme)}</div><section class="card">`;
+  let html = `<section class="card">`;
   m.lessons.forEach((l) => {
     const d = isDone(l.num);
     const badge = l.videoUrl
       ? `<span class="pill">video ${esc(l.videoDur || "")}</span>`
       : `<span class="pill">solo libro</span>`;
     html += `
-      <div class="row lesson-row ${d ? "done" : ""}" data-nav="lezione" data-id="${l.num}">
+      <div class="row lesson-row ${d ? "done" : ""}" role="button" tabindex="0" data-nav="lezione" data-id="${l.num}">
         ${d ? `<div class="check"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--green)"/><path d="M7 12.5l3 3L17 9" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`
             : `<div class="num">${l.num}</div>`}
         <div class="body">
@@ -170,7 +169,6 @@ function renderLesson(num) {
 
   let html = `
     <div class="lesson-head">
-      <div class="kicker">Lezione ${l.num} · ${esc(modLabel)}</div>
       <h2>${esc(l.card)}</h2>
     </div>
 
@@ -418,21 +416,22 @@ function renderProgress() {
       <div class="ring-row">
         <div>
           <div class="big-num">${doneCount}<small> / ${total}</small></div>
-          <div class="label">carte studiate · ${pct}%</div>
+          <div class="label">lezioni completate · ${pct}%</div>
         </div>
       </div>
       <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
     </section>`;
 
   if (doneCount === 0) {
-    html += `<div class="empty"><div class="big">🃏</div>Non hai ancora completato nessuna lezione.<br>Inizia dall'Asso di Bastoni!</div>`;
+    html += `<div class="empty"><div class="big">🃏</div>Nessuna lezione ancora completata.</div>
+      <div class="btn-row"><button class="btn btn-primary" data-nav="lezione" data-id="1">Inizia la prima lezione</button></div>`;
   } else {
     html += `<div class="section-label">Completate</div><section class="card">`;
     COURSE.modules.forEach((m) => {
       m.lessons.forEach((l) => {
         if (isDone(l.num)) {
           const [emoji] = m.name.split(" ");
-          html += `<div class="row lesson-row done" data-nav="lezione" data-id="${l.num}">
+          html += `<div class="row lesson-row done" role="button" tabindex="0" data-nav="lezione" data-id="${l.num}">
             <div class="check"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--green)"/><path d="M7 12.5l3 3L17 9" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div class="body"><div class="t">${esc(l.card)}</div><div class="s">${emoji} ${esc(m.name.split(" ").slice(1).join(" "))}</div></div>
             <span class="chevron"><svg width="10" height="18" viewBox="0 0 10 18"><path d="M1 1l8 8-8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -450,11 +449,15 @@ function renderProgress() {
 /* ---------- Navigazione ---------- */
 function bindNav() {
   document.querySelectorAll("[data-nav]").forEach((el) => {
-    el.addEventListener("click", () => {
+    const go = () => {
       const nav = el.getAttribute("data-nav");
       const id = el.getAttribute("data-id");
       if (nav === "modulo") location.hash = "#/modulo/" + encodeURIComponent(id);
       else if (nav === "lezione") location.hash = "#/lezione/" + id;
+    };
+    el.addEventListener("click", go);
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
     });
   });
 }
